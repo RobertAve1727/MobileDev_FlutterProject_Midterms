@@ -28,36 +28,62 @@ class Inputs extends StatelessWidget {
       padding: const EdgeInsets.all(16.0),
       child: Column(
         children: [
-          TextField(
+          TextFormField(
             controller: input1,
             decoration: InputDecoration(
               labelText: label1,
               border: OutlineInputBorder(),
             ),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'This field cannot be empty';
+              }
+              return null;
+            },
           ),
           const SizedBox(height: 16.0),
-          TextField(
+          TextFormField(
             controller: input2,
             decoration: InputDecoration(
               labelText: label2,
               border: OutlineInputBorder(),
             ),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'This field cannot be empty';
+              }
+              return null;
+            },
           ),
           const SizedBox(height: 16.0),
-          TextField(
+          TextFormField(
             controller: input3,
             decoration: InputDecoration(
               labelText: label3,
               border: OutlineInputBorder(),
             ),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'This field cannot be empty';
+              } else if (!value.contains('@')) {
+                return 'Enter a valid email';
+              }
+              return null;
+            },
           ),
           const SizedBox(height: 16.0),
-          TextField(
+          TextFormField(
             controller: input4,
             decoration: InputDecoration(
               labelText: label4,
               border: OutlineInputBorder(),
             ),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'This field cannot be empty';
+              }
+              return null;
+            },
           ),
         ],
       ),

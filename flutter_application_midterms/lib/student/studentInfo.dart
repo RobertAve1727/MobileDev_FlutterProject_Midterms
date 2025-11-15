@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-// import 'package:flutter_application_midterms/student/student.dart';
-// import 'package:provider/provider.dart';
-// import 'package:flutter_application_midterms/provider/enrollmentState.dart';
 import 'package:flutter_application_midterms/course/inputs.dart';
 
 class StudentInfo extends StatefulWidget {

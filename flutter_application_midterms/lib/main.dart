@@ -18,8 +18,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'EduBridge Enrollment',
-      theme: ThemeData(primarySwatch: Colors.blue),
       debugShowCheckedModeBanner: false,
       initialRoute: '/studentInfo',
       routes: {'/studentInfo': (context) => const StudentInfo()},

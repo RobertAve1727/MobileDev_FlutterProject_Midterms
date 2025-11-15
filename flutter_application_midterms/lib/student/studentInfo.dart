@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_midterms/student/student.dart';
-import 'package:provider/provider.dart';
-import 'package:flutter_application_midterms/provider/enrollmentState.dart';
+// import 'package:flutter_application_midterms/student/student.dart';
+// import 'package:provider/provider.dart';
+// import 'package:flutter_application_midterms/provider/enrollmentState.dart';
+import 'package:flutter_application_midterms/course/inputs.dart';
 
 class StudentInfo extends StatefulWidget {
   const StudentInfo({super.key});
@@ -27,25 +28,26 @@ class StudentInfoState extends State<StudentInfo> {
           textAlign: TextAlign.center,
         ),
       ),
-      body: Column(
-        children: [
-          TextField(
-            controller: firstNameController,
-            decoration: InputDecoration(labelText: 'First Name'),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16.0),
+        child: Form(
+          key: formKey,
+          child: Column(
+            children: [
+              Inputs(
+                input1: firstNameController,
+                input2: lastNameController,
+                input3: emailController,
+                input4: studIdController,
+                label1: 'First Name',
+                label2: 'Last Name',
+                label3: 'Email',
+                label4: 'Student ID',
+              ),
+              const SizedBox(height: 20),
+            ],
           ),
-          TextField(
-            controller: lastNameController,
-            decoration: InputDecoration(labelText: 'Last Name'),
-          ),
-          TextField(
-            controller: emailController,
-            decoration: InputDecoration(labelText: 'Email'),
-          ),
-          TextField(
-            controller: studIdController,
-            decoration: InputDecoration(labelText: 'Student ID'),
-          ),
-        ],
+        ),
       ),
     );
   }

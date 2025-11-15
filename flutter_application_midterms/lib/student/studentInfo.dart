@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_midterms/course/inputs.dart';
+import 'package:flutter_application_midterms/course/courseSelection.dart';
 
 class StudentInfo extends StatefulWidget {
   const StudentInfo({super.key});
@@ -19,12 +20,33 @@ class StudentInfoState extends State<StudentInfo> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           "Student Information Form",
           style: TextStyle(fontSize: 20),
-          textAlign: TextAlign.center,
         ),
       ),
+
+      // ✅ FAB is correct here
+      floatingActionButton: FloatingActionButton(
+        child: const Icon(Icons.arrow_forward),
+        onPressed: () {
+          // Validate fields before navigating
+          if (formKey.currentState!.validate()) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => CourseSelection()),
+            );
+          } else {
+            // Show message if validation fails
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text("Please fill out all required fields."),
+              ),
+            );
+          }
+        },
+      ),
+
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Form(

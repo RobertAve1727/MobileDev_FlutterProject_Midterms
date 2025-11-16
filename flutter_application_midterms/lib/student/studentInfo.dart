@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_midterms/course/inputs.dart';
 import 'package:flutter_application_midterms/course/courseSelection.dart';
+import 'package:provider/provider.dart';
+import 'package:flutter_application_midterms/provider/enrollmentState.dart';
+import 'package:flutter_application_midterms/student/student.dart';
 
 class StudentInfo extends StatefulWidget {
   const StudentInfo({super.key});
@@ -26,18 +29,23 @@ class StudentInfoState extends State<StudentInfo> {
         ),
       ),
 
-      // ✅ FAB is correct here
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.arrow_forward),
         onPressed: () {
-          // Validate fields before navigating
           if (formKey.currentState!.validate()) {
+            Provider.of<EnrollmentState>(context, listen: false).setStudent(
+              Student(
+                firstName: firstNameController.text,
+                lastName: lastNameController.text,
+                email: emailController.text,
+                studentID: studIdController.text,
+              ),
+            );
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => CourseSelection()),
             );
           } else {
-            // Show message if validation fails
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
                 content: Text("Please fill out all required fields."),
@@ -46,7 +54,6 @@ class StudentInfoState extends State<StudentInfo> {
           }
         },
       ),
-
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Form(

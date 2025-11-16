@@ -65,8 +65,9 @@ class Inputs extends StatelessWidget {
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return 'This field cannot be empty';
-              } else if (!value.contains('@')) {
-                return 'Enter a valid email';
+              }
+              if (label3 == 'Email' && !value.contains('@')) {
+                return 'Please enter a valid email address';
               }
               return null;
             },

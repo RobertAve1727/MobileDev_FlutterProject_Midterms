@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_midterms/course/course.dart';
 import 'package:flutter_application_midterms/enrollment/enrollmentReview.dart';
 import 'package:flutter_application_midterms/course/inputs.dart';
+import 'package:provider/provider.dart';
+import 'package:flutter_application_midterms/provider/enrollmentState.dart';
 
 class CourseSelection extends StatefulWidget {
   const CourseSelection({super.key});
@@ -14,7 +17,7 @@ class CourseSelectionState extends State<CourseSelection> {
   final courseCodeController = TextEditingController();
   final courseTitleController = TextEditingController();
   final instructorController = TextEditingController();
-  final scheduleController = TextEditingController();
+  final creditsController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -32,17 +35,27 @@ class CourseSelectionState extends State<CourseSelection> {
         onPressed: () {
           // Validate fields before navigating
           if (formKey.currentState!.validate()) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => EnrollmentReview()),
-            );
-          } else {
-            // Show message if validation fails
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text("Please fill out all required fields."),
-              ),
-            );
+            if (formKey.currentState!.validate()) {
+              Provider.of<EnrollmentState>(context, listen: false).setCourse(
+                Course(
+                  id: courseCodeController.text,
+                  name: courseTitleController.text,
+                  credits: creditsController.text,
+                  instructor: instructorController.text,
+                ),
+              );
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => EnrollmentReview()),
+              );
+            } else {
+              // Show message if validation fails
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text("Please fill out all required fields."),
+                ),
+              );
+            }
           }
         },
       ),
@@ -55,12 +68,12 @@ class CourseSelectionState extends State<CourseSelection> {
               Inputs(
                 input1: courseCodeController,
                 input2: courseTitleController,
-                input3: instructorController,
-                input4: scheduleController,
+                input3: creditsController,
+                input4: instructorController,
                 label1: 'Course Code',
                 label2: 'Course Title',
-                label3: 'Instructor',
-                label4: 'Schedule',
+                label3: 'Credits',
+                label4: 'Instructor',
               ),
               const SizedBox(height: 20),
             ],

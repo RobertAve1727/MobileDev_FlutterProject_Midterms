@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_application_midterms/provider/enrollmentState.dart';
 import 'package:flutter_application_midterms/student/studentInfo.dart';
+import 'package:flutter_application_midterms/course/courseSelection.dart';
+import 'package:flutter_application_midterms/enrollment/enrollmentReview.dart';
 
 void main() {
   runApp(
@@ -20,7 +22,11 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       initialRoute: '/studentInfo',
-      routes: {'/studentInfo': (context) => const StudentInfo()},
+      routes: {
+        '/studentInfo': (context) => const StudentInfo(),
+        '/courseSelection': (context) => const CourseSelection(),
+        '/enrollmentReview': (context) => const EnrollmentReview(),
+      },
     );
   }
 }

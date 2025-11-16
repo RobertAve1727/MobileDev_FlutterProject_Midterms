@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/studentInfo',
       routes: {
         '/studentInfo': (context) => const StudentInfo(),
-        '/courseSelection': (context) => const CourseSelection(),
+        '/courseSelection': (context) => CourseSelection(),
         '/enrollmentReview': (context) => const EnrollmentReview(),
       },
     );

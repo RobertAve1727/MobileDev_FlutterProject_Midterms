@@ -1,84 +1,91 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_midterms/course/course.dart';
 import 'package:flutter_application_midterms/enrollment/enrollmentReview.dart';
-import 'package:flutter_application_midterms/course/inputs.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_application_midterms/provider/enrollmentState.dart';
 
-class CourseSelection extends StatefulWidget {
-  const CourseSelection({super.key});
+class CourseSelection extends StatelessWidget {
+  CourseSelection({super.key});
 
-  @override
-  State<CourseSelection> createState() => CourseSelectionState();
-}
-
-class CourseSelectionState extends State<CourseSelection> {
-  final formKey = GlobalKey<FormState>();
-  final courseCodeController = TextEditingController();
-  final courseTitleController = TextEditingController();
-  final instructorController = TextEditingController();
-  final creditsController = TextEditingController();
+  // Hard-coded courses
+  final List<Course> courses = [
+    Course(
+      id: 'SP Elec 1A',
+      name: 'Web Development',
+      credits: '3.0',
+      instructor: 'Prof. Rodrick Bandalan',
+    ),
+    Course(
+      id: 'CMP',
+      name: 'Computing Math Prep',
+      credits: '3.0',
+      instructor: 'Ms. Lorna Miro',
+    ),
+    Course(
+      id: 'Net2 11001',
+      name: 'Networking 2',
+      credits: '3.0',
+      instructor: 'Prof. Patalita',
+    ),
+    Course(
+      id: 'SP Elec 1B',
+      name: 'Mobile App Development',
+      credits: '3.0',
+      instructor: 'Prof. Adhzleebee',
+    ),
+    Course(
+      id: 'SE 10011',
+      name: 'Software Engineering 1',
+      credits: '3.0',
+      instructor: 'Ms. Josephine Petralba',
+    ),
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "Course Selection Form",
-          style: TextStyle(fontSize: 20),
-          textAlign: TextAlign.center,
-        ),
-      ),
+      appBar: AppBar(title: const Text('Course Selection')),
+      body: Consumer<EnrollmentState>(
+        builder: (context, enrollment, child) {
+          return ListView.builder(
+            itemCount: courses.length,
+            itemBuilder: (context, index) {
+              final course = courses[index];
+              final isSelected = enrollment.course?.id == course.id;
 
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.arrow_forward),
-        onPressed: () {
-          // Validate fields before navigating
-          if (formKey.currentState!.validate()) {
-            if (formKey.currentState!.validate()) {
-              Provider.of<EnrollmentState>(context, listen: false).setCourse(
-                Course(
-                  id: courseCodeController.text,
-                  name: courseTitleController.text,
-                  credits: creditsController.text,
-                  instructor: instructorController.text,
+              return ListTile(
+                title: Text(course.name),
+                subtitle: Text(
+                  'Instructor: ${course.instructor} | Credits: ${course.credits}',
                 ),
+                trailing: isSelected
+                    ? const Icon(Icons.check, color: Colors.green)
+                    : null,
+                onTap: () {
+                  // Update the selected course in global state
+                  enrollment.setCourse(course);
+                },
               );
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => EnrollmentReview()),
-              );
-            } else {
-              // Show message if validation fails
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text("Please fill out all required fields."),
-                ),
-              );
-            }
-          }
+            },
+          );
         },
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: formKey,
-          child: Column(
-            children: [
-              Inputs(
-                input1: courseCodeController,
-                input2: courseTitleController,
-                input3: creditsController,
-                input4: instructorController,
-                label1: 'Course Code',
-                label2: 'Course Title',
-                label3: 'Credits',
-                label4: 'Instructor',
-              ),
-              const SizedBox(height: 20),
-            ],
-          ),
-        ),
+      floatingActionButton: Consumer<EnrollmentState>(
+        builder: (context, enrollment, child) {
+          return FloatingActionButton(
+            child: const Icon(Icons.arrow_forward),
+            onPressed: enrollment.course != null
+                ? () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => EnrollmentReview(),
+                      ),
+                    );
+                  }
+                : null, // disabled if no course selected
+          );
+        },
       ),
     );
   }

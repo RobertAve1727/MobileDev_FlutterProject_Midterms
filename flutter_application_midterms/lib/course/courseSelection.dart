@@ -48,42 +48,113 @@ class CourseSelection extends StatelessWidget {
       body: Consumer<EnrollmentState>(
         builder: (context, enrollment, child) {
           return ListView.builder(
-            itemCount: courses.length,
+            padding: const EdgeInsets.all(12),
+            itemCount: courses.length + 1, // +1 for the button
             itemBuilder: (context, index) {
-              final course = courses[index];
-              final isSelected = enrollment.course?.id == course.id;
+              if (index < courses.length) {
+                final course = courses[index];
+                final isSelected = enrollment.course?.id == course.id;
 
-              return ListTile(
-                title: Text(course.name),
-                subtitle: Text(
-                  'Instructor: ${course.instructor} | Credits: ${course.credits}',
-                ),
-                trailing: isSelected
-                    ? const Icon(Icons.check, color: Colors.green)
-                    : null,
-                onTap: () {
-                  // Update the selected course in global state
-                  enrollment.setCourse(course);
-                },
-              );
-            },
-          );
-        },
-      ),
-      floatingActionButton: Consumer<EnrollmentState>(
-        builder: (context, enrollment, child) {
-          return FloatingActionButton(
-            child: const Icon(Icons.arrow_forward),
-            onPressed: enrollment.course != null
-                ? () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => EnrollmentReview(),
+                return Card(
+                  elevation: 4,
+                  margin: const EdgeInsets.symmetric(vertical: 10),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: InkWell(
+                    borderRadius: BorderRadius.circular(12),
+                    onTap: () {
+                      enrollment.setCourse(course);
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Icon(
+                            Icons.menu_book,
+                            size: 32,
+                            color: Color(0xFF228B22),
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  course.name,
+                                  style: const TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                const SizedBox(height: 6),
+                                Text(
+                                  "Instructor: ${course.instructor}",
+                                  style: const TextStyle(fontSize: 14),
+                                ),
+                                Text(
+                                  "Credits: ${course.credits}",
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.grey.shade700,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          if (isSelected)
+                            const Icon(
+                              Icons.check_circle,
+                              color: Colors.green,
+                              size: 28,
+                            ),
+                        ],
                       ),
-                    );
-                  }
-                : null, // disabled if no course selected
+                    ),
+                  ),
+                );
+              } else {
+                // This is the button under the last course
+                return Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 20,
+                  ),
+                  child: SizedBox(
+                    width: double.infinity,
+                    height: 50,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF228B22),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      onPressed: enrollment.course != null
+                          ? () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      const EnrollmentReview(),
+                                ),
+                              );
+                            }
+                          : null,
+                      child: const Text(
+                        "Select Course",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              }
+            },
           );
         },
       ),

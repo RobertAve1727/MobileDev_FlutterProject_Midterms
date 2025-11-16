@@ -28,32 +28,6 @@ class StudentInfoState extends State<StudentInfo> {
           style: TextStyle(fontSize: 20),
         ),
       ),
-
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.arrow_forward),
-        onPressed: () {
-          if (formKey.currentState!.validate()) {
-            Provider.of<EnrollmentState>(context, listen: false).setStudent(
-              Student(
-                firstName: firstNameController.text,
-                lastName: lastNameController.text,
-                email: emailController.text,
-                studentID: studIdController.text,
-              ),
-            );
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => CourseSelection()),
-            );
-          } else {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text("Please fill out all required fields."),
-              ),
-            );
-          }
-        },
-      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Form(
@@ -71,6 +45,62 @@ class StudentInfoState extends State<StudentInfo> {
                 label4: 'Student ID',
               ),
               const SizedBox(height: 20),
+
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 16,
+                ),
+                child: SizedBox(
+                  width: double.infinity,
+                  height: 50,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF228B22), // Forest Green
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    onPressed: () {
+                      if (formKey.currentState!.validate()) {
+                        Provider.of<EnrollmentState>(
+                          context,
+                          listen: false,
+                        ).setStudent(
+                          Student(
+                            firstName: firstNameController.text,
+                            lastName: lastNameController.text,
+                            email: emailController.text,
+                            studentID: studIdController.text,
+                          ),
+                        );
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => CourseSelection(),
+                          ),
+                        );
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text(
+                              "Please fill out all required fields.",
+                            ),
+                          ),
+                        );
+                      }
+                    },
+                    child: const Text(
+                      "Submit Form",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
         ),
